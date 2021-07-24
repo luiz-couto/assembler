@@ -1,18 +1,31 @@
-#ifndef MONTADOR_H
-#define MONTADOR_H
+#ifndef ASSEMBLER_H
+#define ASSEMBLER_H
 
+#include <iostream>
 #include <fstream>
+#include <string>
+#include <vector>
+#include <map>
+#include <sstream>
 
 using namespace std;
 
-class Montador {
+class Assembler {
 private:
     fstream file;
-    int translation[];
+    vector<int> translation;
+    vector<string> labels;
+    map<string, int> labelsToPos;
+    vector<int> nextStates;
 
 public:
-    Montador(/* args */);
-    ~Montador();
+    Assembler(string filename);
+    ~Assembler();
+    void findLabels(fstream file);
+    int processWord(string str, int pos);
+    void setNextStates(const int states[2]);
+    void checkNextState(int state);
+    void run();
 };
 
 

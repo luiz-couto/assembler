@@ -1,8 +1,7 @@
 #include <iostream>
-#include <fstream>
-#include <string>
 
 #include "constants.hpp"
+#include "montador.hpp"
 
 using namespace std;
 
@@ -11,34 +10,8 @@ int main(int argc, char *argv[]) {
         error("usage: ./montador <file_name>");
     }
 
-    fstream file;
-    file.open(argv[1], ios::in);
-    if (!file.is_open()) {
-        error("could not open file");
-    }
-
-    string line;
-    while(getline(file, line)) {
-        cout << line << endl;
-    }
+    Assembler *assembler = new Assembler(argv[1]);
+    assembler->run();
 
     return 0;
-}
-
-void processWord(string str) {
-
-    if (str[0] == ';') {
-        return;
-    }
-
-    if (str == "HALT") {
-        
-    }
-    else if (str == "LOAD") {
-
-    }
-    else if (str == "STORE") {
-
-    }
-
 }
