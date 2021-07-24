@@ -1,6 +1,19 @@
 #ifndef MONTADOR_H
 #define MONTADOR_H
 
-// TODO: structs, classes, e outras definições.
+#include <fstream>
+
+using namespace std;
+
+class Montador {
+private:
+    fstream file;
+    int translation[];
+
+public:
+    Montador(/* args */);
+    ~Montador();
+};
+
 
 #endif

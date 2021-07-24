@@ -1,3 +1,7 @@
 #include "montador.hpp"
 
-// TODO: implementação do montador
+Montador::Montador(/* args */) {
+}
+
+Montador::~Montador() {
+}
