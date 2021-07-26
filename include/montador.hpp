@@ -21,10 +21,13 @@ private:
 public:
     Assembler(string filename);
     ~Assembler();
-    void findLabels(fstream file);
     int processWord(string str, int pos);
     void setNextStates(const int states[2]);
     void checkNextState(int state);
+    int isInstruction(string str);
+    int isRegister(string str);
+    bool isNumber(const string& str);
+    bool isLabel(string str, int pos);
     void run();
 };
 

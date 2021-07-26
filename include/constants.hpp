@@ -1,3 +1,13 @@
+#include <string>
+using namespace std;
+
+/*
+DEBUG definitions
+*/
+
+#define rep(i, a, b) for(int i = int(a); i < int(b); i++)
+#define debugA(x, l) { rep(i,0,l) { cout << x[i] << " "; } printf("\n"); }
+
 /*
 Instructions definitions
 */

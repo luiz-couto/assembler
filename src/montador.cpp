@@ -4,6 +4,9 @@
 using namespace std;
 
 Assembler::Assembler(string filename) {
+    this->labels.push_back("IGN");
+    this->nextStates = {IGN, IGN};
+
     fstream file;
     file.open(filename, ios::in);
     if (!file.is_open()) {
@@ -12,22 +15,23 @@ Assembler::Assembler(string filename) {
 
     string line;
     while(getline(file, line)) {
-        cout << line << endl;
-        
         stringstream ss(line);
         string word;
         int pos = 0;
+
         while (getline(ss, word, ' ')) {
+            if (word == " " || word.length() == 0) {
+                continue;
+            } 
             pos++;
             int wordType = processWord(word,pos);
             if (wordType == COMMENT) {
                 break;
             }
         }
-
-
     }
 
+    debugA(this->translation, this->translation.size());
 
 }
 
@@ -36,9 +40,6 @@ Assembler::~Assembler() {
 
 void Assembler::run() {
 
-}
-
-void Assembler::findLabels(fstream file) {
 }
 
 int Assembler::processWord(string str, int pos) {
@@ -86,7 +87,7 @@ int Assembler::processWord(string str, int pos) {
    
 }
 
-int isInstruction(string str) {
+int Assembler::isInstruction(string str) {
     for (int i=0; i<INST_SIZE; i++) {
         if (str == INSTRUCTIONS[i]) {
             return i;
@@ -96,7 +97,7 @@ int isInstruction(string str) {
     return -1;
 }
 
-int isRegister(string str) {
+int Assembler::isRegister(string str) {
     for (int i=0; i<REG_SIZE; i++) {
         if (str == REGISTERS[i]) {
             return i;
@@ -105,14 +106,14 @@ int isRegister(string str) {
     return -1;
 }
 
-bool isNumber(const string& str) {
+bool Assembler::isNumber(const string& str) {
     for (char const &c : str) {
         if (std::isdigit(c) == 0) return false;
     }
     return true;
 }
 
-bool isLabel(string str, int pos) {
+bool Assembler::isLabel(string str, int pos) {
     if (pos == 1) {
         if (str[str.length() - 1] == ':') {
             return true;
