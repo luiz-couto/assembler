@@ -7,6 +7,7 @@ Assembler::Assembler(string filename) {
     this->fileName = filename;
     this->labels.push_back("IGN");
     this->nextStates = {IGN, IGN};
+    this->lineIdx = 0;
 }
 
 Assembler::~Assembler() {
@@ -21,6 +22,7 @@ void Assembler::run() {
 
     bool endOfFile = false;
     string line;
+
     while(getline(file, line)) {
         stringstream ss(line);
         string word;
@@ -41,6 +43,7 @@ void Assembler::run() {
         }
 
         if (endOfFile) break;
+        this->lineIdx++;
     }
 
     cout << "MV-EXE" << endl;
@@ -89,6 +92,13 @@ int Assembler::processWord(string str, int pos) {
 
     bool isInt = isNumber(str);
     if (isInt) {
+        int nxtState = getNextState();
+        if (nxtState == MEM) {
+            checkNextState(MEM);
+            this->translation.push_back(stoi(str));
+            return MEM;
+        }
+        
         checkNextState(INT);
         this->translation.push_back(stoi(str));
         return INT;
@@ -157,7 +167,7 @@ void Assembler::checkNextState(int state) {
             return;
         } else {
             std::stringstream ss;
-            ss << "expected " << this->nextStates[1] << " but got " << state;
+            ss << "line " << this->lineIdx << ": expected " << this->nextStates[1] << " but got " << state;
             error(ss.str());
         }
     }
@@ -166,8 +176,15 @@ void Assembler::checkNextState(int state) {
         return;
     } else {
         std::stringstream ss;
-        ss << "expected " << this->nextStates[0] << " but got " << state;
+        ss << "line " << this->lineIdx << ": expected " << this->nextStates[0] << " but got " << state;
         error(ss.str());
     }
+}
+
+int Assembler::getNextState() {
+    if (this->nextStates[0] == IGN) {
+        return this->nextStates[1];
+    }
+    return this->nextStates[0];
 }
 

@@ -17,6 +17,7 @@ private:
     vector<string> labels;
     map<string, int> labelsToPos;
     vector<int> nextStates;
+    int lineIdx;
 
 public:
     Assembler(string filename);
@@ -24,6 +25,7 @@ public:
     int processWord(string str, int pos);
     void setNextStates(const int states[2]);
     void checkNextState(int state);
+    int getNextState();
     int isInstruction(string str);
     int isRegister(string str);
     bool isNumber(const string& str);
