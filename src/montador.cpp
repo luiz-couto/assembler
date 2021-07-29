@@ -4,11 +4,17 @@
 using namespace std;
 
 Assembler::Assembler(string filename) {
+    this->fileName = filename;
     this->labels.push_back("IGN");
     this->nextStates = {IGN, IGN};
+}
 
+Assembler::~Assembler() {
+}
+
+void Assembler::run() {
     fstream file;
-    file.open(filename, ios::in);
+    file.open(this->fileName, ios::in);
     if (!file.is_open()) {
         error("could not open file");
     }
@@ -37,8 +43,6 @@ Assembler::Assembler(string filename) {
         if (endOfFile) break;
     }
 
-    //debugA(this->translation, this->translation.size());
-
     cout << "MV-EXE" << endl;
     cout << this->translation.size() << " 100" << " 999" << " 100" << endl;
     
@@ -55,13 +59,6 @@ Assembler::Assembler(string filename) {
         }
     }
     cout << endl;
-}
-
-Assembler::~Assembler() {
-}
-
-void Assembler::run() {
-
 }
 
 int Assembler::processWord(string str, int pos) {

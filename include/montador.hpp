@@ -12,7 +12,7 @@ using namespace std;
 
 class Assembler {
 private:
-    fstream file;
+    string fileName;
     vector<int> translation;
     vector<string> labels;
     map<string, int> labelsToPos;
