@@ -13,6 +13,7 @@ Assembler::Assembler(string filename) {
         error("could not open file");
     }
 
+    bool endOfFile = false;
     string line;
     while(getline(file, line)) {
         stringstream ss(line);
@@ -27,12 +28,33 @@ Assembler::Assembler(string filename) {
             int wordType = processWord(word,pos);
             if (wordType == COMMENT) {
                 break;
+            } else if (wordType == END) {
+                endOfFile = true;
+                break;
             }
         }
+
+        if (endOfFile) break;
     }
 
-    debugA(this->translation, this->translation.size());
+    //debugA(this->translation, this->translation.size());
 
+    cout << "MV-EXE" << endl;
+    cout << this->translation.size() << " 100" << " 999" << " 100" << endl;
+    
+    for (long unsigned int i=0; i<this->translation.size(); i++) {
+        if (this->translation[i] < 0) {
+            string label = this->labels[this->translation[i] * -1];
+            int pos = this->labelsToPos[label];
+            cout << pos - i;
+        } else {
+            cout << this->translation[i];
+        }
+        if (i != this->translation.size() - 1) {
+            cout << " ";
+        }
+    }
+    cout << endl;
 }
 
 Assembler::~Assembler() {
@@ -45,6 +67,10 @@ void Assembler::run() {
 int Assembler::processWord(string str, int pos) {
     if (str[0] == ';') {
         return COMMENT;
+    }
+
+    if (str == "END") {
+        return END;
     }
 
     int reg = isRegister(str);

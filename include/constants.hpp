@@ -22,6 +22,7 @@ Instructions definitions
 #define LAB 3
 #define COMMENT 4
 #define INT 5
+#define END 6
 
 #define HALT 0
 #define HALT_GRAPH {IGN,IGN}
